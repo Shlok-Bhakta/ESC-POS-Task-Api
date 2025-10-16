@@ -1,0 +1,12 @@
+services:
+  printer-service:
+    build: .
+    ports:
+      - "5000:5000"
+    devices:
+      - /dev/usb/lp0:/dev/usb/lp0
+    environment:
+      - PRINTER_DEVICE=/dev/usb/lp0
+    volumes:
+      - ./main.py:/app/main.py
+    restart: unless-stopped
