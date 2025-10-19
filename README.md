@@ -36,6 +36,27 @@ Run locally:
 uv run python main.py
 ```
 
+### Remote Printer Development
+
+If your printer is connected to a remote machine, use socat to forward the printer device over the network.
+
+**On the remote PC (192.168.1.205) with printer connected:**
+```bash
+socat TCP-LISTEN:9100,reuseaddr,fork SYSTEM:'cat > /dev/usb/lp0'
+```
+
+**On your development machine, start the socat tunnel:**
+```bash
+tail -f ./printer_output | socat STDIN TCP:192.168.1.205:9100
+```
+
+Keep this running in a separate terminal. Then start the development server:
+```bash
+./run_with_chromium.sh
+```
+
+The script will detect the `./printer_output` file and use it automatically.
+
 ## Docker
 
 Build and run:
